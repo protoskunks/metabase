@@ -214,10 +214,14 @@ function applyChartTooltips(
 
           if (data && series.length > 1) {
             if (card._breakoutColumn) {
+              const seriesSettings = chart.settings.series(series[seriesIndex]);
+              const seriesTitle = seriesSettings && seriesSettings.title;
               data.unshift({
                 key: getFriendlyName(card._breakoutColumn),
-                value: card._breakoutValue,
-                col: card._breakoutColumn,
+                // Use series title if it's set
+                value: seriesTitle ? seriesTitle : card._breakoutValue,
+                // Don't include the column if series title is set (it's already formatted)
+                col: seriesTitle ? null : card._breakoutColumn,
               });
             }
           }
